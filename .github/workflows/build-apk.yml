@@ -24,15 +24,13 @@ jobs:
 
       - name: Setup Android SDK
         uses: android-actions/setup-android@v3
-        with:
-          accept-android-licenses: true
 
-      - name: Setup Gradle
-        uses: gradle/actions/setup-gradle@v4
-        with:
-          gradle-version: '8.13'
+      - name: Install Android 36 SDK Platform & Build Tools
+        run: |
+          yes | sdkmanager --licenses || true
+          sdkmanager --install "platforms;android-36" "build-tools;36.0.0" "platform-tools" || true
 
-      - name: Prepare Keystore and Config Files
+      - name: Prepare Keystore and Config
         run: |
           mkdir -p ~/.android
           if [ -f "debug.keystore.base64" ]; then
@@ -43,8 +41,13 @@ jobs:
             cp .env.example .env
           fi
 
+      - name: Setup Gradle
+        uses: gradle/actions/setup-gradle@v4
+        with:
+          gradle-version: '8.13'
+
       - name: Build APK with Gradle
-        run: gradle assembleDebug --no-daemon --stacktrace
+        run: gradle :app:assembleDebug --stacktrace --no-daemon
 
       - name: Upload Debug APK
         uses: actions/upload-artifact@v4
