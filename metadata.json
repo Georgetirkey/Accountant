@@ -1,0 +1,7 @@
+{
+  "name": "Personal Accounting",
+  "description": "Easy-to-use personal accounting and bill generator with income, expense tracking, accounts, and custom invoice creation.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
+
